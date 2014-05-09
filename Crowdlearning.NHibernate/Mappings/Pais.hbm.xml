@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+                   assembly="Crowdlearning.NHibernate" 
+                   namespace="Crowdlearning.Model">
+
+  <class name="Pais" table="PAISES">
+    <id name="Handle" unsaved-value="0">
+      <generator class="sequence">
+        <param name="sequence">hibernate_sequence</param>
+      </generator>
+    </id>
+    <property name="Nome" />
+
+    <bag name="Estados" cascade="all" inverse="true" >
+      <key column="PAIS" />
+      <one-to-many class="Estado"/>
+    </bag>
+    
+  </class>
+
+</hibernate-mapping>
