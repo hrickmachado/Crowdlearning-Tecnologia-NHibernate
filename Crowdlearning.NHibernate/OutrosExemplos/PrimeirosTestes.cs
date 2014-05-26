@@ -18,7 +18,7 @@ namespace Crowdlearning
                 if (estado != null)
                 {
                     var nomePais = estado.Pais.Nome;
-                    foreach (var municipio in estado.Municipios)
+                    foreach (var municipio in estado.Cidades)
                     {
                         var nomeMunicipio = municipio.Nome;
                     }
@@ -51,17 +51,17 @@ namespace Crowdlearning
         {
             using (ISession session = Context.SessionFactory.OpenSession())
             {
-                Municipio municipio = new Municipio();
-                municipio.Nome = "Blumenau";
+                Cidade cidade = new Cidade();
+                cidade.Nome = "Blumenau";
 
                 ICriteria criteria = session.CreateCriteria(typeof(Estado));
 
                 var estado = new Estado { Nome = "Santa Catarina" };
                 criteria.Add(Example.Create(estado));
 
-                municipio.Estado = criteria.List<Estado>().First();
+                cidade.Estado = criteria.List<Estado>().First();
 
-                session.Save(municipio);
+                session.Save(cidade);
                 session.Flush();
             }
         }
@@ -71,7 +71,7 @@ namespace Crowdlearning
         {
             using (ISession session = Context.SessionFactory.OpenSession())
             {
-                Municipio blumenau = new Municipio();
+                Cidade blumenau = new Cidade();
                 blumenau.Nome = "Blumenau";
 
                 Estado sc = new Estado();
@@ -83,11 +83,20 @@ namespace Crowdlearning
                 brasil.Estados.Add(sc);
                 sc.Pais = brasil;
 
-                sc.Municipios.Add(blumenau);
+                sc.Cidades.Add(blumenau);
                 blumenau.Estado = sc;
 
                 session.Save(brasil);
                 session.Flush();
+            }
+        }
+
+        [TestMethod]
+        public void SaveTest()
+        {
+            using (ISession session = Context.SessionFactory.OpenSession())
+            {
+                var cidades = session.CreateCriteria<Cidade>().List();
             }
         }
     }

@@ -5,12 +5,27 @@ using System.Text;
 using Crowdlearning.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NHibernate;
+using NHibernate.Classic;
 
 namespace Crowdlearning.Demo1
 {
     [TestClass]
     public class Demostracao
     {
+        [TestMethod]
+        [ExpectedException(typeof (ValidationFailure))]
+        public void ValidacaoPais()
+        {
+            using (ISession session = Context.SessionFactory.OpenSession())
+            {
+                Pais pais = new Pais();
+                pais.Nome = "Br";
+
+                session.Save(pais);
+
+                session.Flush();
+            }
+        }
         [TestMethod]
         public void CrudTestPais()
         {
@@ -44,7 +59,7 @@ namespace Crowdlearning.Demo1
         }
 
         [TestMethod]
-        //[ExpectedException(typeof (ObjectNotFoundException))]
+        [ExpectedException(typeof (ObjectNotFoundException))]
         public void ExemploLoad()
         {
             ISession session = Context.SessionFactory.OpenSession();
@@ -86,7 +101,7 @@ namespace Crowdlearning.Demo1
                     session.Flush();
                     session.Transaction.Commit();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     session.Transaction.Rollback();
                     throw;
@@ -105,10 +120,10 @@ namespace Crowdlearning.Demo1
                 var nomePais = estado.Pais.Nome;
             }
 
-            int qtdMunicipios = estado.Municipios.Count;
+            int qtdMunicipios = estado.Cidades.Count;
             Assert.IsTrue(qtdMunicipios > 0);
 
-            foreach (var municipio in estado.Municipios)
+            foreach (var municipio in estado.Cidades)
             {
                 var nomeMunicipios = municipio.Nome;
             }

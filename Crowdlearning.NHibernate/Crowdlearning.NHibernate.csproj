@@ -11,6 +11,7 @@
     <AssemblyName>Crowdlearning.NHibernate</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Iesi.Collections">
@@ -52,24 +55,38 @@
   <ItemGroup>
     <Compile Include="Demo1\Demostracao.cs" />
     <Compile Include="Demo2\DemostracaoConsultas.cs" />
+    <Compile Include="Demo3\BuscandoEmLoteTest.cs" />
+    <Compile Include="Demo3\CallbacksTest.cs" />
+    <Compile Include="Demo3\CriteriaTest.cs" />
+    <Compile Include="Demo3\FiltroAutomatico.cs" />
+    <Compile Include="Demo3\HibernateQueryLanguage.cs" />
+    <Compile Include="Demo3\LambdaLinkToSQL.cs" />
+    <Compile Include="Demo3\MuiltCommandTest.cs" />
+    <Compile Include="Mappings\DocumentoMap.cs" />
+    <Compile Include="Mappings\EmpresaMap.cs" />
+    <Compile Include="Model\Documento.cs" />
+    <Compile Include="Model\Empresa.cs" />
     <Compile Include="OutrosExemplos\LinkToSQLTest.cs" />
     <Compile Include="Mappings\EstadoMap.cs" />
     <Compile Include="OutrosExemplos\PrimeirosTestes.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Model\Estado.cs" />
-    <Compile Include="Model\Municipio.cs" />
+    <Compile Include="Model\Cidade.cs" />
     <Compile Include="Model\Pais.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
-    <EmbeddedResource Include="Mappings\Municipio.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Cidades.hbm.xml" />
     <EmbeddedResource Include="Mappings\Pais.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

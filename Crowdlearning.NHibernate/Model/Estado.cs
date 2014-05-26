@@ -9,13 +9,14 @@ namespace Crowdlearning.Model
     {
         public virtual int Handle { get; set; }
         public virtual String Nome { get; set; }
+        public virtual String Sigla { get; set; }
         public virtual Pais Pais { get; set; }
 
-        private IList<Municipio> _municipios = new List<Municipio>();
-        public virtual IList<Municipio> Municipios
+        private IList<Cidade> _cidades = new List<Cidade>();
+        public virtual IList<Cidade> Cidades
         {
-            get { return _municipios; }
-            set { _municipios = value; }
+            get { return _cidades; }
+            set { _cidades = value; }
         }
     }
 }

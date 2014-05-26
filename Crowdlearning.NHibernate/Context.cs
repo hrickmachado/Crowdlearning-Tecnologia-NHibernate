@@ -10,7 +10,10 @@ using NHibernate.Cfg;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Dialect;
 using NHibernate.Driver;
+using NHibernate.Engine;
 using NHibernate.Mapping.ByCode;
+using NHibernate.Tool.hbm2ddl;
+using NHibernate.Type;
 
 
 namespace Crowdlearning
@@ -19,29 +22,54 @@ namespace Crowdlearning
     public class Context
     {
         public static ISessionFactory SessionFactory;
+        public static Configuration Configuration;
 
         [AssemblyInitialize]
         public static void NHibernateConfiguration(TestContext context)
         {
             log4net.Config.XmlConfigurator.Configure();
+            
 
-            Configuration cfg = new Configuration();
+            Configuration = new Configuration();
             // lendo o arquivo hibernate.cfg.xml
-            cfg.Configure(); 
+            Configuration.Configure();
+
+            FilterDefinition filterDef = new FilterDefinition(
+                "Empresa","EMPRESA = :EMPRESA",
+                new Dictionary<string, IType>() {{"EMPRESA", NHibernateUtil.Int32}}, false);
+            Configuration.AddFilterDefinition(filterDef);
+            filterDef = new FilterDefinition(
+                "Ativa", "ATIVO = 'Y'",
+                new Dictionary<string, IType>(), false);
+            Configuration.AddFilterDefinition(filterDef);
+
 
             // Mapeamento por código
             var mapper = new ModelMapper(); 
             mapper.AddMappings(Assembly.GetExecutingAssembly().GetExportedTypes());
             HbmMapping mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
-            cfg.AddMapping(mapping);
+            Configuration.AddMapping(mapping);
             
-            var mappingXMl = mapping.AsString();
+            // Gerar o XML a partir do mapeamento de codigo.
+            //var mappingXMl = mapping.AsString();
 
             // Mapeamento por arquivo, in resource.
-            cfg.AddAssembly(Assembly.GetExecutingAssembly());
+            Configuration.AddAssembly(Assembly.GetExecutingAssembly());
 
+            
             // Gerando o SessionFactory
-            SessionFactory = cfg.BuildSessionFactory();
+            SessionFactory = Configuration.BuildSessionFactory();
+        }
+
+        /// <summary>
+        /// Faz a criação de tabelas na base de dados.
+        /// Atenção: Os dados de tabelas já existentes podem ser perdidos.
+        /// </summary>
+        [TestMethod]
+        [Ignore]
+        public void CreateTablesForModelMapping()
+        {
+            new SchemaExport(Configuration).Create(false, true);
         }
 
 
@@ -57,7 +85,7 @@ namespace Crowdlearning
             cfg.DataBaseIntegration(db =>
             {
                 db.LogSqlInConsole = true;
-                db.ConnectionString = @"Server=localhost;initial catalog=nhibernate;User Id=sa;Password=masterkey;";                
+                db.ConnectionString = @"Server=localhost;initial catalog=nhibernate;User Id=sa;Password=masterkey;";
                 db.Driver<SqlClientDriver>();
                 db.Dialect<MsSql2012Dialect>();
             });

@@ -13,6 +13,8 @@ namespace Crowdlearning.Mappings
     {
         public EstadoMap()
         {
+            // :TODO BuscandoEmLote
+            BatchSize(10);
             Table("ESTADOS");
             Id(x => x.Handle,
                 a =>
@@ -30,7 +32,12 @@ namespace Crowdlearning.Mappings
                     m.Column("NOME");
                     m.NotNullable(true);
                 });
-            
+            Property(x => x.Sigla,
+                m =>
+                {
+                    m.Column("SIGLA");
+                    m.Length(2);
+                });
             ManyToOne(x => x.Pais,
                 mapping =>
                 {
@@ -39,12 +46,14 @@ namespace Crowdlearning.Mappings
                     mapping.NotNullable(true);
                 });
              
-            Bag(estado => estado.Municipios,
+            Bag(estado => estado.Cidades,
                 mapping =>
                 {
                     mapping.Cascade(Cascade.All);
                     mapping.Inverse(true);
                     mapping.Key(k => k.Column("ESTADO"));
+                    // :TODO BuscandoEmLote
+                    mapping.BatchSize(5);
                 }, relation => relation.OneToMany()
                 );
         }

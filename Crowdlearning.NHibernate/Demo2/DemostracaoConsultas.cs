@@ -64,7 +64,7 @@ namespace Crowdlearning.Demo2
         public void CriteriaTest()
         {
             ISession session = Context.SessionFactory.OpenSession();
-            IList municipiosList = session.CreateCriteria(typeof(Municipio))
+            IList municipiosList = session.CreateCriteria(typeof(Cidade))
                 .Add(Expression.Or(
                     Expression.Eq("Nome", "Blumenau"),
                     Expression.Like("Nome", "Blu%")

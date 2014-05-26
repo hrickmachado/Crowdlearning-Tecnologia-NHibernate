@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using NHibernate.Classic;
 using NHibernate.Event;
 
 namespace Crowdlearning.Model
 {
-    public class Pais
+    public class Pais : IValidatable
     {
         private IList<Estado> _estados = new List<Estado>();
         
@@ -19,16 +20,13 @@ namespace Crowdlearning.Model
             set { _estados = value; }
         }
 
-        
-    }
 
-    public class ReprosityPais
-    {
-        public void Save(Pais pais)
+        public virtual void Validate()
         {
-            if (pais.Nome.Length > 10)
-                throw new Exception();
-            Context.SessionFactory.OpenSession().SaveOrUpdate(pais);
+            if (Nome.Length <= 2)
+                throw new ValidationFailure("Nome não pode ser melhor que 2.");
         }
     }
+
+   
 }
