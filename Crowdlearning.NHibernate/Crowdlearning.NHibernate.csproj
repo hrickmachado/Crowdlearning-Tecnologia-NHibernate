@@ -62,6 +62,7 @@
     <Compile Include="Demo3\HibernateQueryLanguage.cs" />
     <Compile Include="Demo3\LambdaLinkToSQL.cs" />
     <Compile Include="Demo3\MuiltCommandTest.cs" />
+    <Compile Include="Demo3\ValidatableTest.cs" />
     <Compile Include="Mappings\DocumentoMap.cs" />
     <Compile Include="Mappings\EmpresaMap.cs" />
     <Compile Include="Model\Documento.cs" />
